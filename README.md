@@ -1,11 +1,15 @@
 # mock-server
+
 Server mock files, just put JSON file on `public` folder
 
-## Install:
+## Install
+
 ```npm install```
 
-## Run:
+## Run
+
 ```node server.js```
 
-## Access: 
+## Access
+
 ```http://localhost:3000/{filename}```
