@@ -1,0 +1,29 @@
+{
+  "type": "partner",
+  "subtype": "list_partners",
+  "results": [
+    {
+      "id": 72,
+      "header_and_menu_color": "#00972D",
+      "name": "Brindes Da Partyou",
+      "communication_name": "Brindes da Partyou",
+      "cnpj": "00.000.000/0000-00"
+    },
+    {
+      "id": 28,
+      "header_and_menu_color": "#320064",
+      "name": "Brindes Da Partyou",
+      "communication_name": "Brindes da Partyou",
+      "cnpj": "00.000.000/0000-00"
+    }
+  ],
+  "results_spec": {
+    "page": 1,
+    "page_size": 10,
+    "total_pages": 2,
+    "next": 2,
+    "previous": null,
+    "total_results": 20,
+    "status": 200
+  }
+}

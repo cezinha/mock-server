@@ -1,0 +1,87 @@
+{
+  "results": [
+    {
+      "address": "",
+      "cover_photo": "",
+      "id": 33,
+      "name": "Teste registro",
+      "start_date": null,
+      "type": "access_point"
+    },
+    {
+      "address": "",
+      "cover_photo": "",
+      "id": 35,
+      "name": "Krqja vendedor",
+      "start_date": null,
+      "type": "access_point"
+    },
+    {
+      "address": null,
+      "cover_photo": null,
+      "id": 1163,
+      "name": "Camisetas",
+      "start_date": null,
+      "type": "event"
+    },
+    {
+      "address": null,
+      "cover_photo": null,
+      "id": 1244,
+      "name": "Economiadas",
+      "start_date": null,
+      "type": "event"
+    },
+    {
+      "address": null,
+      "cover_photo": null,
+      "id": 1304,
+      "name": "Teste pacotes valendo",
+      "start_date": null,
+      "type": "event"
+    },
+    {
+      "address": null,
+      "cover_photo": "https://ucarecdn.com/47de43eb-7e30-4209-aee4-865965e2df55/-/crop/1079x607/0,685/-/preview/",
+      "id": 2472,
+      "name": "Brindes",
+      "start_date": null,
+      "type": "event"
+    },
+    {
+      "address": "",
+      "cover_photo": "",
+      "id": 34,
+      "name": "Krqja",
+      "start_date": null,
+      "type": "access_point"
+    },
+    {
+      "address": null,
+      "cover_photo": null,
+      "id": 2486,
+      "name": "Brinde Psicodelia",
+      "start_date": null,
+      "type": "event"
+    },
+    {
+      "address": null,
+      "cover_photo": "https://s3-sa-east-1.amazonaws.com/partyouuploads/thumb/d576626c138094448c83b6a402766ed60f4523318990b895ea6ad40a028fa132.png",
+      "id": 1423,
+      "name": "Chapelaria Psicodelia ",
+      "start_date": null,
+      "type": "event"
+    }
+  ],
+  "results_spec": {
+    "next": null,
+    "page": 1,
+    "page_size": 10,
+    "previous": null,
+    "status": 200,
+    "total_pages": 1,
+    "total_results": 9
+  },
+  "subtype": "list_accesspoint",
+  "type": "ticket"
+}
