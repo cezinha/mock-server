@@ -8,13 +8,18 @@
       "active_partner": {
         "communication_name": "Brindes Da Partyou",
         "header_and_menu_color": "#0288d1",
-        "id": 28
+        "id": 28,
+        "permissions": {
+          "charge_value_through_qrcode": true,
+          "consume_partner_tickets": true,
+          "restore_partner_tickets": true
+        }
       },
       "cpf": "25740981883",
       "email": "celina@partyou.com.br",
       "gender": "female",
-      "id": 35440,
-      "name": "Eduardo Scicia De Oliveira",
+      "id": 46934,
+      "name": "Celina Uemura",
       "phone": "985785699",
       "phone_prefix": "11",
       "profile_picture": "https://ucarecdn.com/bfcacb7e-adcc-4359-9ccb-82ebcb55cd57/-/crop/960x961/0,168/-/preview/"

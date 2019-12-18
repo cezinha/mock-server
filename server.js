@@ -16,6 +16,7 @@ var ticket_read_qr_created = require("./json/ticket/ticket_read_qr_created.json"
 var ticket_consume = require("./json/ticket/ticket_consume.json");
 var ticket_query_ticket_by_cpf = require("./json/ticket/ticket_query_ticket_by_cpf.json");
 var ticket_query_by_cpf_or_qrcode = require("./json/ticket/ticket_query_by_cpf_or_qrcode.json");
+var payment_qrcode = require("./json/payment/qrcode.json");
 var partner = require("./json/partner/partner_list.json");
 
 app.use(function(req, res, next) {
@@ -110,6 +111,13 @@ app.post('/apimobile/v1/requests', function(req, res) {
 
     if (req.body.type == "refresh") {
       res.json(login);
+      return ;
+    }
+
+    if (req.body.type == "qrcode") {
+      res.json(payment_qrcode);
+      //res.status(500).send({ error: 'Something failed!' });
+      //res.status(401).send({ message: 'Unauthorized' });
       return ;
     }
   }
