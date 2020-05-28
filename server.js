@@ -18,6 +18,11 @@ var ticket_query_ticket_by_cpf = require("./json/ticket/ticket_query_ticket_by_c
 var ticket_query_by_cpf_or_qrcode = require("./json/ticket/ticket_query_by_cpf_or_qrcode.json");
 var payment_qrcode = require("./json/payment/qrcode.json");
 var partner = require("./json/partner/partner_list.json");
+var item_list = require("./json/item/item.json");
+var question_list = require("./json/item/question.json");
+var payment_list = require("./json/item/payment.json");
+var user_query_by_cpf = require('./json/user/query_by_cpf.json');
+var user_query_by_cpf_empty = require('./json/user/empty.json');
 
 app.use(function(req, res, next) {
   // check for .xls extension
@@ -59,6 +64,22 @@ app.post('/apimobile/v1/requests', function(req, res) {
 
       return ;
     }
+    if (req.body.type == "item") {
+      res.json(item_list);
+
+      return ;
+    }
+    if (req.body.type == "payment") {
+      res.json(payment_list);
+
+      return ;
+    }
+    if (req.body.type == "questions") {
+      //res.status(401).send({ message: 'Unauthorized' });
+      res.json(question_list);
+
+      return ;
+    }
     if (req.body.type == "event") {
       if (req.body.subtype == "detail") {
         res.json(event_detail);
@@ -67,6 +88,12 @@ app.post('/apimobile/v1/requests', function(req, res) {
       }
       res.json(event);
       //res.status(401).send({ message: 'Unauthorized' });
+      return ;
+    }
+    if (req.body.type == "user") {
+      //res.status(401).send({ message: 'Unauthorized' });
+      //res.json(user_query_by_cpf);
+      res.json(user_query_by_cpf_empty);
       return ;
     }
     if (req.body.type == "ticket") {
@@ -83,7 +110,9 @@ app.post('/apimobile/v1/requests', function(req, res) {
 
       if (req.body.subtype == "query_by_cpf_or_qrcode") {
         res.json(ticket_query_by_cpf_or_qrcode);
-
+        //res.status(500).send({ error: 'Something failed!' });
+        //res.status(502).send({ error: 'Bad Gateway' });
+        //res.status(400).send({ message: 'Bad Request' });
         return;
       }
 
@@ -93,8 +122,8 @@ app.post('/apimobile/v1/requests', function(req, res) {
       }
 
       if (req.body.subtype == "consume_restore_ticket") {
-        res.json(ticket_consume);
-
+        //res.json(ticket_consume);
+        res.status(401).send({ message: 'Unauthorized', status: 401 });
         return;
       }
 
