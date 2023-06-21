@@ -1,0 +1,28 @@
+{
+  "data": [
+    {
+      "id": "1",
+      "name": "Naruto Umazaki",
+      "age": 32,
+      "genre": "male"
+    },
+    {
+      "id": "2",
+      "name": "Sasuke Uchiha",
+      "age": 32,
+      "genre": "male"
+    },
+    {
+      "id": "3",
+      "name": "Hinata Hyuga",
+      "age": 30,
+      "genre": "female"
+    },
+    {
+      "id": "4",
+      "name": "Sakura Uchiha",
+      "age": 32,
+      "genre": "female"
+    }
+  ]
+}

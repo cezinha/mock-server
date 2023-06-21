@@ -1,157 +1,123 @@
-var express = require('express');
-var app = express();
+const fs = require('fs').promises;
+const path = require('path');
+const express = require('express');
+const app = express();
+const cors = require('cors');
 
-var login = require("./json/login/index.json");
-var refresh = require("./json/login/refresh.json");
-var login_facebook = require("./json/login/facebook.json");
-var login_checkdocument = require("./json/login/check-document.json");
-var event = require("./json/event/event_active.json");
-var event_detail = require("./json/event/event_detail.json");
-var ticket_list_accesspoint = require("./json/ticket/ticket_list_accesspoint.json");
-var ticket_select_accesspoint = require("./json/ticket/ticket_select_accesspoint.json");
-var ticket_select_item = require("./json/ticket/ticket_select_item.json");
-var ticket_read_qr_used = require("./json/ticket/ticket_read_qr_used.json");
-var ticket_read_qr_transfered = require("./json/ticket/ticket_read_qr_transfered.json");
-var ticket_read_qr_created = require("./json/ticket/ticket_read_qr_created.json");
-var ticket_consume = require("./json/ticket/ticket_consume.json");
-var ticket_query_ticket_by_cpf = require("./json/ticket/ticket_query_ticket_by_cpf.json");
-var ticket_query_by_cpf_or_qrcode = require("./json/ticket/ticket_query_by_cpf_or_qrcode.json");
-var payment_qrcode = require("./json/payment/qrcode.json");
-var partner = require("./json/partner/partner_list.json");
-var item_list = require("./json/item/item.json");
-var question_list = require("./json/item/question.json");
-var payment_list = require("./json/item/payment.json");
-var user_query_by_cpf = require('./json/user/query_by_cpf.json');
-var user_query_by_cpf_empty = require('./json/user/empty.json');
+const API = {
+  get: [
+    {
+      endpoint: '/users',
+      type: 'JSON',
+      resource: 'user/list',
+    },
+    {
+      endpoint: '/users/:id',
+      type: 'JSON',
+      resource: 'user/id',
+    },
+  ],
+  post: [
+    {
+      endpoint: '/users',
+      type: 'JSON',
+      resource: 'user/added',
+      hasError: true,
+    },
+  ],
+  put: [
+    {
+      endpoint: '/user/:id',
+      type: 'JSON',
+      resource: 'user/put',
+    },
+  ],
+  delete: [
+    {
+      endpoint: '/user/:id',
+      type: 'JSON',
+      resource: 'user/delete',
+    },
+  ],
+  patch: [
+    {
+      endpoint: '/user/:id',
+      type: 'JSON',
+      resource: 'user/patch',
+    },
+  ],
+};
 
-app.use(function(req, res, next) {
-  // check for .xls extension
-  console.log(req.originalUrl);
-  next();
-}, express.static('public'));
-
-//app.use(express.static('public'));
+// if need to run static pages
+// app.use(express.static('public'));
 
 app.use(express.json());
-app.post('/apimobile/v1/requests', function(req, res) {
-  console.log(req.body);
-  if (req.body.type) {
-    if (req.body.type == "check_document") {
-      //res.status(400).send({ message: 'Bad Request', status: 400 });
-      res.json(login_checkdocument);
 
-      return ;
-    }
-    if (req.body.type == "login") {
-      if (req.body.subtype == "refresh_login") {
-        //res.status(401).send({ message: 'Unauthorized', status: 401 });
-        res.json(refresh);
+app.use(cors());
 
-        return ;
+var methodReqs = ['get', 'post', 'put', 'patch', 'delete'];
+
+async function init() {
+  console.log('============== adding endpoints ==============');
+  for (var m = 0; m < methodReqs.length; m++) {
+    const method = methodReqs[m];
+    const methodReq = API[method];
+
+    if (methodReq && methodReq.length > 0) {
+      for (i in methodReq) {
+        const { resource, endpoint, type, hasError } = methodReq[i];
+        console.log({ method: methodReqs[m], resource, endpoint, hasError });
+        try {
+          const ext = type === 'HTML' ? 'html' : 'json';
+          const file = await fs.readFile(`./json/${resource}.${ext}`);
+          const data = await file.toString();
+          const content = type === 'HTML' ? data : await JSON.parse(data);
+          const resp = (req, res) => {
+            console.log(req.path, req.params, req.method, hasError);
+
+            if (hasError === true) {
+              res.status(500).send(content);
+              return;
+            }
+            if (type === 'JSON') {
+              setTimeout(() => {
+                res.json(content);
+              }, 100);
+            } else if (type === 'HTML') {
+              setTimeout(() => {
+                res.set('Content-Type', 'text/html');
+                res.send(content);
+              }, 1500);
+            } else {
+              setTimeout(() => {
+                res.set('Content-Type', 'text/xml');
+                res.send(content.xml);
+              }, 500);
+            }
+            // MOCK ERRORS
+            // res.status(500).send({ error: 'Something failed!' });
+            // res.status(404).send({ error: 'Something failed!' });
+          };
+          if (method === 'get') {
+            app.get(endpoint, resp);
+          } else if (method === 'post') {
+            app.post(endpoint, resp);
+          } else if (method === 'put') {
+            app.put(endpoint, resp);
+          } else if (method === 'patch') {
+            app.patch(endpoint, resp);
+          } else {
+            app.delete(endpoint, resp);
+          }
+        } catch (e) {
+          console.log(e);
+        }
       }
-      //res.status(401).send({ message: 'Unauthorized', status: 401 });
-      res.json(login);
-
-      return ;
-    }
-    if (req.body.type == "facebook") {
-      res.json(login_facebook);
-
-      return ;
-    }
-    if (req.body.type == "partner") {
-      res.json(partner);
-
-      return ;
-    }
-    if (req.body.type == "item") {
-      res.json(item_list);
-
-      return ;
-    }
-    if (req.body.type == "payment") {
-      res.json(payment_list);
-
-      return ;
-    }
-    if (req.body.type == "questions") {
-      //res.status(401).send({ message: 'Unauthorized' });
-      res.json(question_list);
-
-      return ;
-    }
-    if (req.body.type == "event") {
-      if (req.body.subtype == "detail") {
-        res.json(event_detail);
-        //res.status(400).send({ message: 'Bad Request' });
-        return ;
-      }
-      res.json(event);
-      //res.status(401).send({ message: 'Unauthorized' });
-      return ;
-    }
-    if (req.body.type == "user") {
-      //res.status(401).send({ message: 'Unauthorized' });
-      //res.json(user_query_by_cpf);
-      res.json(user_query_by_cpf_empty);
-      return ;
-    }
-    if (req.body.type == "ticket") {
-      if (req.body.subtype == "list_accesspoint") {
-        res.json(ticket_list_accesspoint);
-        //res.status(401).send({ message: 'Unauthorized' });
-        return ;
-      }
-
-      if (req.body.subtype == "select_item") {
-        res.json(ticket_select_item);
-        return ;
-      }
-
-      if (req.body.subtype == "query_by_cpf_or_qrcode") {
-        res.json(ticket_query_by_cpf_or_qrcode);
-        //res.status(500).send({ error: 'Something failed!' });
-        //res.status(502).send({ error: 'Bad Gateway' });
-        //res.status(400).send({ message: 'Bad Request' });
-        return;
-      }
-
-      if (req.body.subtype == "read_qrcode") {
-        res.json(ticket_read_qr_created);
-        return ;
-      }
-
-      if (req.body.subtype == "consume_restore_ticket") {
-        //res.json(ticket_consume);
-        res.status(401).send({ message: 'Unauthorized', status: 401 });
-        return;
-      }
-
-      if (req.body.subtype === "query_ticket_by_cpf") {
-        res.json(ticket_query_ticket_by_cpf);
-
-        return;
-      }
-      // select_accesspoint
-      res.json(ticket_select_accesspoint);
-      //res.status(401).send({ message: 'Unauthorized' });
-      return ;
-    }
-
-    if (req.body.type == "refresh") {
-      res.json(login);
-      return ;
-    }
-
-    if (req.body.type == "qrcode") {
-      res.json(payment_qrcode);
-      //res.status(500).send({ error: 'Something failed!' });
-      //res.status(401).send({ message: 'Unauthorized' });
-      return ;
     }
   }
-  res.status(500).send({ error: 'Something failed!' });
-});
+  console.log('============== endpoints added ==============');
+}
+init();
 
 app.listen(3000, function () {
   console.log('Mock server running on port 3000');
