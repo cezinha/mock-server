@@ -27,21 +27,21 @@ const API = {
   ],
   put: [
     {
-      endpoint: '/user/:id',
+      endpoint: '/users/:id',
       type: 'JSON',
       resource: 'user/put',
     },
   ],
   delete: [
     {
-      endpoint: '/user/:id',
+      endpoint: '/users/:id',
       type: 'JSON',
       resource: 'user/delete',
     },
   ],
   patch: [
     {
-      endpoint: '/user/:id',
+      endpoint: '/users/:id',
       type: 'JSON',
       resource: 'user/patch',
     },
